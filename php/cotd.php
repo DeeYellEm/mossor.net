@@ -29,9 +29,9 @@ if ($err) {
 	//echo "cURL Error #:" . $err;
   $word = "foo";
 } else {
-	//echo "Response: " . $response. "<br>";
-  //$type = gettype($response);
-  //echo "Type:". $type . "<br>";
+  echo "Response: " . $response. "<br>";
+  $type = gettype($response);
+  echo "Type:". $type . "<br>";
   $obj = json_decode($response);
   $UCword = ucfirst($obj->{'word'});
   //echo "Word: ". $obj->{'word'} . ", UCword: " . $UCword . "<br>";
