@@ -41,10 +41,10 @@ if ($enable_1) {
     $people[$count]['gender'] = $gender;
     # Pick a headshot from the appropriate list
     if ($gender == "Female") {
-      $file = $femFile;        
+      $file = $femFile;
       $picDir = "static/StaffSpotlight/Female/";
       if (file_exists($file)) {
-        $f_contents = file($file); 
+        $f_contents = file($file);
         $url = $f_contents[rand(0, count($f_contents) - 1)];
         $url = rtrim($url, " \n\r\t\v\0");
         $people[$count]['url'] = $picDir.$url;
@@ -54,10 +54,10 @@ if ($enable_1) {
       }
 
     } else {
-      $file = $maleFile;        
+      $file = $maleFile;
       $picDir = "static/StaffSpotlight/Male/";
       if (file_exists($file)) {
-        $f_contents = file($file); 
+        $f_contents = file($file);
         $url = $f_contents[rand(0, count($f_contents) - 1)];
         $url = rtrim($url, " \n\r\t\v\0");
         $people[$count]['url'] = $picDir.$url;
@@ -79,13 +79,13 @@ if ($debug) {echo "Step 2: Backgrounds.\n";};
 if ($enable_2) {
 
     $bgFile = "static/StaffSpotlight/StaffSpotlight-Backgrounds.txt";
-    
+
     $count = 0;
     while ($count < $numCards) {
-      $file = $bgFile;        
+      $file = $bgFile;
       $picDir = "static/StaffSpotlight/Backgrounds/";
       if (file_exists($file)) {
-        $f_contents = file($file); 
+        $f_contents = file($file);
         $url = $f_contents[rand(0, count($f_contents) - 1)];
         $url = rtrim($url, " \n\r\t\v\0");
         $people[$count]['background'] = $picDir.$url;
@@ -171,7 +171,7 @@ if ($enable_4) {
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
-	    #echo $response;
+	         #echo $response;
         }
 
         $data = json_decode($response);
@@ -181,8 +181,15 @@ if ($enable_4) {
         #print_r($data);
         #echo "===\n";
 
-        $people[$count]['quote'] = $data->{'content'};
-        $people[$count]['author'] = $data->{'author'};
+        if ($data == NULL) {
+          $people[$count]['quote'] = "[REDACTED]";
+          $people[$count]['author'] = "Anonymous";
+        } else {
+          $people[$count]['quote'] = $data->{'content'};// code...
+          $people[$count]['author'] = $data->{'author'};
+        }
+
+
 
         $count++;
 
@@ -199,11 +206,11 @@ if ($enable_5) {
    $count=0;
    while ($count < $numCards) {
      if (file_exists($file)) {
-       $f_contents = file($file); 
+       $f_contents = file($file);
        $role = $f_contents[rand(0, count($f_contents) - 1)];
        $role = rtrim($role, " \n\r\t\v\0");
        $people[$count]['role'] = $role;
-       
+
        //echo "Line: [".$line."]\n";
 
      } else {
