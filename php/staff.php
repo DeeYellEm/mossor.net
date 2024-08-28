@@ -148,33 +148,36 @@ if ($debug) {echo "Step 4: Quotes.\n";};
 
 if ($enable_4) {
     $count = 0;
+
+    # As of 08/27/24, api.quotable.io has gone quiet, so this is my fallback option
+    # Just call this once since it returns 50 quotes per call and I just need 3.
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, "https://zenquotes.io/api/quotes");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+
+    if ($err) {
+        echo "cURL Error #:" . $err;
+    } else {
+       #echo $response;
+    }
+
+    $data = json_decode($response);
+    
     while ($count < $numCards) {
 
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-          CURLOPT_URL => "https://api.quotable.io/random?maxLength=160",
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 30,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "GET",
-        ]);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-	         #echo $response;
-        }
-
-        $data = json_decode($response);
+#        curl_setopt_array($curl, [
+#          CURLOPT_URL => "https://api.quotable.io/random?maxLength=160",
+#          CURLOPT_RETURNTRANSFER => true,
+#          CURLOPT_FOLLOWLOCATION => true,
+#          CURLOPT_ENCODING => "",
+#          CURLOPT_MAXREDIRS => 10,
+#          CURLOPT_TIMEOUT => 30,
+#          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+#          CURLOPT_CUSTOMREQUEST => "GET",
+#        ]);
 
         #echo "Response: " . $response. "\n";
         #echo "===\n";
@@ -185,11 +188,9 @@ if ($enable_4) {
           $people[$count]['quote'] = "[REDACTED]";
           $people[$count]['author'] = "Anonymous";
         } else {
-          $people[$count]['quote'] = $data->{'content'};// code...
-          $people[$count]['author'] = $data->{'author'};
+          $people[$count]['quote'] = $data[$count]->{"q"}; // Quote
+          $people[$count]['author'] = $data[$count]->{"a"}; // Author
         }
-
-
 
         $count++;
 
@@ -276,7 +277,7 @@ if ($enable_6) {
   // Post- card
   echo "        </div>\n"; // end Row
   echo "        <div class=\"card bg-info text-white\">\n";
-  echo "          <p style=\"color:black; font-size:100%;\">Credit to <a href=\"https://helloacm.com/rig/\">HelloACM</a> for the random identity generator, <a href=\"https://generated.photos/\">Generated.photos</a> for the AI generated headshots and <a href=\"https://pixabay.com/\">Pixabay</a> for the random backgrounds and <a href=\"https://api.quotable.io\">api.quoteable.io</a> for the quotes api.</p>\n";
+  echo "          <p style=\"color:black; font-size:100%;\">Credit to <a href=\"https://helloacm.com/rig/\">HelloACM</a> for the random identity generator, <a href=\"https://generated.photos/\">Generated.photos</a> for the AI generated headshots and <a href=\"https://pixabay.com/\">Pixabay</a> for the random backgrounds and inspirational quotes provided by <a href=\"https://zenquotes.io/\" target=\"_blank\">ZenQuotes API</a></p>\n";
   echo "        </div>\n";
 
   echo "        </center>\n";
