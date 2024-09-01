@@ -71,7 +71,7 @@ echo "          </form>\n";
 echo "        </div>\n";
 echo "        <div class=\"container p-2\">\n";
 echo "        <p style=\"color:black; font-size:140%;\">Once upon a time, in the Before Times (call it the 1990s), software engineers would add to an otherwise boring login by displaying additional things like time, date or weather.  Another was to display a random fortune.  Some are movie quotes, some are literary quotes and some are just fortunes.  Some are profane and some are a little profound.  This bit of code accesses an online API to generate a fortune and display it.</p>\n";
-echo "        </div>";
+echo "        </div>\n";
 echo "        <div class=\"card bg-info text-white\">\n";
 echo "          <p style=\"color:black; font-size:100%;\">Credit to <a href=\"https://helloacm.com/fortune/\">HelloACM</a> , which provides and hosts the API for this and many other cool things.</p>\n";
 echo "        </div>\n";
